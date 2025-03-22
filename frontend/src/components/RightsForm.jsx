@@ -1,17 +1,35 @@
 "use client"
 
 import { useState } from "react"
-import { FaGavel, FaArrowRight } from "react-icons/fa"
+import { FaGavel, FaArrowRight, FaGlobe } from "react-icons/fa"
 
 function RightsForm({ onSubmit, disabled }) {
   const [situation, setSituation] = useState("")
+  const [language, setLanguage] = useState("English")
+  const [isProcessing, setIsProcessing] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (situation.trim()) {
-      onSubmit(situation)
+      setIsProcessing(true)
+      await onSubmit(situation, language)
+      setIsProcessing(false)
     }
   }
+
+  const commonLanguages = [
+    "English",
+    "Spanish",
+    "French",
+    "German",
+    "Chinese",
+    "Russian",
+    "Arabic",
+    "Hindi",
+    "Japanese",
+    "Portuguese",
+    "Italian",
+  ]
 
   const exampleSituations = [
     "I was arrested without being told why.",
@@ -31,20 +49,55 @@ function RightsForm({ onSubmit, disabled }) {
           <FaGavel className="form-icon" />
           <h2>Describe Your Situation</h2>
         </div>
-        <p>Provide details about your legal situation, and we'll help you understand your rights.</p>
+        <p>Provide details about your legal situation in any language, and we'll help you understand your rights.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="rights-form">
+        <div className="language-selector">
+          <label htmlFor="language">
+            <FaGlobe className="language-icon" /> Select Your Language:
+          </label>
+          <div className="language-input-container">
+            <select
+              id="language"
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className="language-select"
+              disabled={disabled || isProcessing}
+            >
+              {commonLanguages.map((lang) => (
+                <option key={lang} value={lang}>
+                  {lang}
+                </option>
+              ))}
+              <option value="Other">Other</option>
+            </select>
+            {language === "Other" && (
+              <input
+                type="text"
+                placeholder="Enter your language"
+                className="custom-language-input"
+                onChange={(e) => setLanguage(e.target.value)}
+                disabled={disabled || isProcessing}
+              />
+            )}
+          </div>
+        </div>
+
         <textarea
           value={situation}
           onChange={(e) => setSituation(e.target.value)}
-          placeholder="Example: I was pulled over by police and they want to search my car without a warrant..."
+          placeholder={`Describe your situation in ${language}...`}
           rows={6}
-          disabled={disabled}
+          disabled={disabled || isProcessing}
           required
         />
-        <button type="submit" className="submit-button primary-button" disabled={disabled || !situation.trim()}>
-          Get Your Rights <FaArrowRight />
+        <button
+          type="submit"
+          className="submit-button primary-button"
+          disabled={disabled || isProcessing || !situation.trim()}
+        >
+          {isProcessing ? "Processing..." : "Get Your Rights"} {!isProcessing && <FaArrowRight />}
         </button>
       </form>
 
@@ -52,7 +105,12 @@ function RightsForm({ onSubmit, disabled }) {
         <h3>Example Situations:</h3>
         <div className="example-buttons">
           {exampleSituations.map((example, index) => (
-            <button key={index} onClick={() => handleExampleClick(example)} className="example-button">
+            <button
+              key={index}
+              onClick={() => handleExampleClick(example)}
+              className="example-button"
+              disabled={disabled || isProcessing}
+            >
               {example}
             </button>
           ))}

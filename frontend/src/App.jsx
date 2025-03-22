@@ -5,7 +5,6 @@ import "./App.css"
 import Header from "./components/Header"
 import RightsForm from "./components/RightsForm"
 import RightsResponse from "./components/RightsResponse"
-import FollowUpForm from "./components/FollowUpForm"
 import Footer from "./components/Footer"
 
 function App() {
@@ -13,9 +12,9 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [currentSituation, setCurrentSituation] = useState("")
-  const [conversationHistory, setConversationHistory] = useState([])
+  const [currentLanguage, setCurrentLanguage] = useState("")
 
-  const handleSubmit = async (situation, isFollowUp = false) => {
+  const handleSubmit = async (situation, language) => {
     setLoading(true)
     setError(null)
 
@@ -25,7 +24,7 @@ function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ situation }),
+        body: JSON.stringify({ situation, language }),
       })
 
       if (!res.ok) {
@@ -34,21 +33,8 @@ function App() {
 
       const data = await res.json()
       setResponse(data)
-
-      // Update conversation history
-      if (isFollowUp) {
-        setConversationHistory([
-          ...conversationHistory,
-          { type: "follow-up", content: situation },
-          { type: "response", content: data },
-        ])
-      } else {
-        setCurrentSituation(situation)
-        setConversationHistory([
-          { type: "situation", content: situation },
-          { type: "response", content: data },
-        ])
-      }
+      setCurrentSituation(situation)
+      setCurrentLanguage(language)
     } catch (err) {
       setError("An error occurred while processing your request. Please try again.")
       console.error(err)
@@ -60,19 +46,22 @@ function App() {
   const handleNewSituation = () => {
     setResponse(null)
     setCurrentSituation("")
-    setConversationHistory([])
+    setCurrentLanguage("")
   }
 
   return (
     <div className="app">
       <Header />
       <main className="main-content">
-        {!response && <RightsForm onSubmit={(situation) => handleSubmit(situation, false)} disabled={loading} />}
+        {!response && <RightsForm onSubmit={handleSubmit} disabled={loading} />}
 
         {loading && (
           <div className="loading-container">
             <div className="loading-spinner"></div>
             <p>Analyzing your situation...</p>
+            <p className="loading-detail">
+              This may take a moment as we process your request in {currentLanguage || "your language"}
+            </p>
           </div>
         )}
 
@@ -80,14 +69,12 @@ function App() {
 
         {response && (
           <div className="response-container">
-            <RightsResponse data={response} situation={currentSituation} />
+            <RightsResponse data={response} situation={currentSituation} language={currentLanguage} />
 
-            <div className="follow-up-container">
-              <FollowUpForm
-                onSubmit={(followUp) => handleSubmit(followUp, true)}
-                onNewSituation={handleNewSituation}
-                disabled={loading}
-              />
+            <div className="action-buttons">
+              <button onClick={handleNewSituation} className="new-situation-button">
+                Start New Inquiry
+              </button>
             </div>
           </div>
         )}
