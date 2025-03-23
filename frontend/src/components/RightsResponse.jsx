@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { FaGavel, FaClipboard, FaCheck, FaChevronDown, FaChevronUp } from "react-icons/fa"
 import { Card } from "./ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
 function RightsResponse({ data, situation }) {
   const [expandedRights, setExpandedRights] = useState({})
@@ -23,13 +24,19 @@ function RightsResponse({ data, situation }) {
 
   return (
     <Card className="rights-response p-4 md:p-6 lg:p-8">
-      <div className="situation-summary mb-4 p-4 bg-gray-100 border-l-4 border-primary">
-        <h3 className="text-lg font-semibold">Your Situation</h3>
-        <p>{situation}</p>
-      </div>
+      <Card className="situation-summary mb-4 p-4 bg-gray-100 border-l-4 border-primary">
+        <div className="flex items-center">
+          <div>
+            <h3 className="text-lg font-semibold">User situation</h3>
+            <p className="text-sm">
+              {situation}
+            </p>
+          </div>
+        </div>
+      </Card>
 
       <h2 className="text-xl font-bold mb-4">
-        Your Rights <FaGavel className="section-icon inline" />
+        Your Rights
       </h2>
 
       <div className="response-content">
