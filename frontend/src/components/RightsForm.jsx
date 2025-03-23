@@ -25,7 +25,6 @@ function RightsForm({ onSubmit, disabled }) {
     "Spanish",
     "French",
     "German",
-    "Chinese",
     "Russian",
     "Portuguese",
     "Italian",
