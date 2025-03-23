@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { FaGavel, FaClipboard, FaCheck, FaChevronDown, FaChevronUp } from "react-icons/fa"
+import { Card } from "./ui/card"
 
 function RightsResponse({ data, situation }) {
   const [expandedRights, setExpandedRights] = useState({})
@@ -21,14 +22,14 @@ function RightsResponse({ data, situation }) {
   }
 
   return (
-    <div className="rights-response">
-      <div className="situation-summary">
-        <h3>Your Situation</h3>
+    <Card className="rights-response p-4 md:p-6 lg:p-8">
+      <div className="situation-summary mb-4 p-4 bg-gray-100 border-l-4 border-primary">
+        <h3 className="text-lg font-semibold">Your Situation</h3>
         <p>{situation}</p>
       </div>
 
-      <h2>
-        Your Rights <FaGavel className="section-icon" />
+      <h2 className="text-xl font-bold mb-4">
+        Your Rights <FaGavel className="section-icon inline" />
       </h2>
 
       <div className="response-content">
@@ -36,19 +37,19 @@ function RightsResponse({ data, situation }) {
           data.rights.map((right) => {
             const isExpanded = expandedRights[right.id] !== false // Default to expanded
             return (
-              <div key={right.id} className="right-item">
-                <div className="right-header" onClick={() => toggleRightExpansion(right.id)}>
-                  <div className="right-title-area">
-                    <span className="right-id">{right.id}</span>
-                    <h3>{right.title}</h3>
+              <div key={right.id} className="right-item mb-4 border rounded-lg shadow-sm">
+                <div className="right-header flex justify-between items-center p-4 cursor-pointer">
+                  <div className="right-title-area flex items-center">
+                    <span className="right-id bg-primary text-white rounded-full px-2 py-1 mr-2">{right.id}</span>
+                    <h3 className="text-lg font-semibold">{right.title}</h3>
                   </div>
-                  <button className="expand-button" aria-label={isExpanded ? "Collapse" : "Expand"}>
+                  <button className="expand-button" aria-label={isExpanded ? "Collapse" : "Expand"} onClick={() => toggleRightExpansion(right.id)}>
                     {isExpanded ? <FaChevronUp /> : <FaChevronDown />}
                   </button>
                 </div>
 
                 {isExpanded && (
-                  <div className="right-content">
+                  <div className="right-content p-4">
                     <p>{right.description}</p>
                     <button
                       className="copy-button"
@@ -85,7 +86,7 @@ function RightsResponse({ data, situation }) {
           </p>
         </div>
       </div>
-    </div>
+    </Card>
   )
 }
 

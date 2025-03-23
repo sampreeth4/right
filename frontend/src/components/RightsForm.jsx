@@ -2,6 +2,9 @@
 
 import { useState } from "react"
 import { FaGavel, FaArrowRight, FaGlobe } from "react-icons/fa"
+import { Select, SelectTrigger, SelectContent, SelectItem } from "./ui/select"
+import { Textarea } from "./ui/textarea"
+import { Button } from "./ui/button"
 
 function RightsForm({ onSubmit, disabled }) {
   const [situation, setSituation] = useState("")
@@ -43,19 +46,18 @@ function RightsForm({ onSubmit, disabled }) {
   }
 
   return (
-    <div className="rights-form-container">
-      <div className="form-header">
-        <div className="form-title">
-          <FaGavel className="form-icon" />
-          <h2>Describe Your Situation</h2>
+    <div className="rights-form-container card p-4 md:p-6 lg:p-8">
+      <div className="form-header mb-4">
+        <div className="form-title flex items-center">
+          <h2 className="text-xl font-semibold ml-2">Describe Your Situation</h2>
         </div>
-        <p>Provide details about your legal situation in any language, and we'll help you understand your rights.</p>
+        <p className="text-gray-600">Provide details about your legal situation in any language, and we'll help you understand your rights.</p>
       </div>
 
       <form onSubmit={handleSubmit} className="rights-form">
         <div className="language-selector">
           <label htmlFor="language">
-            <FaGlobe className="language-icon" /> Select Your Language:
+            Select Your Language:
           </label>
           <div className="language-input-container">
             <select
@@ -84,21 +86,22 @@ function RightsForm({ onSubmit, disabled }) {
           </div>
         </div>
 
-        <textarea
+        <Textarea
           value={situation}
           onChange={(e) => setSituation(e.target.value)}
           placeholder={`Describe your situation in ${language}...`}
           rows={6}
           disabled={disabled || isProcessing}
           required
+          className="w-full"
         />
-        <button
+        <Button
           type="submit"
-          className="submit-button primary-button"
           disabled={disabled || isProcessing || !situation.trim()}
+          className="w-full mt-4"
         >
-          {isProcessing ? "Processing..." : "Get Your Rights"} {!isProcessing && <FaArrowRight />}
-        </button>
+          {isProcessing ? "Processing..." : "Get Your Rights"} <FaArrowRight />
+        </Button>
       </form>
 
       <div className="example-situations">

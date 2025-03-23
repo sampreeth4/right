@@ -15,33 +15,32 @@ function FollowUpForm({ onSubmit, onNewSituation, disabled }) {
   }
 
   return (
-    <div className="follow-up-form-container">
-      <h3>Need more information?</h3>
+    <div className="follow-up-form-container card">
+      <h3 className="text-lg font-semibold">Need more information?</h3>
       <p>Ask a follow-up question or describe a new situation.</p>
 
       <form onSubmit={handleSubmit} className="follow-up-form">
-        <div className="input-container">
-          <textarea
-            value={followUp}
-            onChange={(e) => setFollowUp(e.target.value)}
-            placeholder="Example: What if the police officer didn't read me my rights?"
-            rows={3}
-            disabled={disabled}
-            required
-          />
-          <button
-            type="submit"
-            className="submit-button"
-            disabled={disabled || !followUp.trim()}
-            aria-label="Submit follow-up question"
-          >
-            <FaArrowRight />
-          </button>
-        </div>
+        <textarea
+          value={followUp}
+          onChange={(e) => setFollowUp(e.target.value)}
+          placeholder="Example: What if the police officer didn't read me my rights?"
+          rows={3}
+          className="border rounded-md p-2 mb-4"
+          disabled={disabled}
+          required
+        />
+        <button
+          type="submit"
+          className="submit-button primary-button"
+          disabled={disabled || !followUp.trim()}
+          aria-label="Submit follow-up question"
+        >
+          <FaArrowRight />
+        </button>
       </form>
 
       <div className="new-situation-container">
-        <button onClick={onNewSituation} className="new-situation-button" disabled={disabled}>
+        <button onClick={onNewSituation} className="new-situation-button primary-button" disabled={disabled}>
           <FaRedo /> Start New Situation
         </button>
       </div>

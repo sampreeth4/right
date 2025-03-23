@@ -6,6 +6,7 @@ import Header from "./components/Header"
 import RightsForm from "./components/RightsForm"
 import RightsResponse from "./components/RightsResponse"
 import Footer from "./components/Footer"
+import { Container } from "./components/ui/container"
 
 function App() {
   const [response, setResponse] = useState(null)
@@ -36,8 +37,7 @@ function App() {
       setCurrentSituation(situation)
       setCurrentLanguage(language)
     } catch (err) {
-      setError("An error occurred while processing your request. Please try again.")
-      console.error(err)
+      setError(err.message)
     } finally {
       setLoading(false)
     }
@@ -50,7 +50,7 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div className="main-container">
       <Header />
       <main className="main-content">
         {!response && <RightsForm onSubmit={handleSubmit} disabled={loading} />}
@@ -79,6 +79,7 @@ function App() {
           </div>
         )}
       </main>
+
       <Footer />
     </div>
   )
