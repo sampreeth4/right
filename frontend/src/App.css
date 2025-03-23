@@ -48,7 +48,8 @@ body {
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  text-align: center;
+  justify-content: center;
   padding: 1rem 2rem;
   background-color: var(--secondary);
   color: var(--primary);
