@@ -27,9 +27,6 @@ function RightsForm({ onSubmit, disabled }) {
     "German",
     "Chinese",
     "Russian",
-    "Arabic",
-    "Hindi",
-    "Japanese",
     "Portuguese",
     "Italian",
   ]
@@ -72,17 +69,9 @@ function RightsForm({ onSubmit, disabled }) {
                   {lang}
                 </option>
               ))}
-              <option value="Other">Other</option>
+              
             </select>
-            {language === "Other" && (
-              <input
-                type="text"
-                placeholder="Enter your language"
-                className="custom-language-input"
-                onChange={(e) => setLanguage(e.target.value)}
-                disabled={disabled || isProcessing}
-              />
-            )}
+            
           </div>
         </div>
 
